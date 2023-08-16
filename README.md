@@ -1,2 +1,2 @@
 # Alumni-Connect
-Alumni-connect 
+To build connection between seniors and juniors
