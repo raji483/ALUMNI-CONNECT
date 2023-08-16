@@ -1,0 +1,17 @@
+extends base2
+
+block content
+  main.main
+        
+    each interview in InterviewExperiences
+      .row
+        .col-md-12
+          .experience-card
+            .experience-card__details    
+            
+              p.experience-card__text
+                !=interview.experience
+            .experience-card__details.right
+              h1.experience-card__sub-heading=`By ${interview.userName}`    
+
+        .line &nbsp;

@@ -1,0 +1,64 @@
+extends base
+
+block content
+  main.main
+    .card-container
+      
+      each alum in alumni
+        .card
+          .card__header
+            .card__picture
+              .card__picture-overlay1  &nbsp;
+              img.card__picture-img(src=`/img/user-profile.jpg`, alt=`${alum.name}`)
+            h3.heading-tertirary
+              span= alum.name
+
+          .card__details
+            h4.card__sub-heading= `A ${alum.company} Employee`
+            p.card__text= "Get in touch with your alumni"
+            .card__data
+              svg.card__icon.icon_color
+                use(xlink:href='/img/icons.svg#icon-map-pin')
+              span= alum.company
+      
+            .card__data
+              svg.card__icon
+                use(xlink:href='/img/icons.svg#icon-user')
+              span= alum.interviewExperiences
+
+          .card__footer
+            button.btn.btn--small.btn--green.all-btn(type="button" onclick="openPopup('" + alum.id + "')") Contact
+            button.btn.btn--small.btn--green.all-btn(type="button" onclick="deleteUser('" + alum.id + "')") Delete
+            div(id="popup" + alum.id, class="popup" style="display: none;")
+ 
+              .popup-content
+                .card__details
+                  h1.card__heading="Contact Details"
+                
+                  p.card__text=" "
+                  h1.user_info=`Email:  ${alum.email} `
+                  h1.user_info=`Mobile: 900800xxxx `
+                  div 
+                    button.btn.btn--green.closePopup(type="button" onclick="closePopup('"+alum.id+"')") Close
+          script(src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js")
+          script.
+            function openPopup(popupId) {
+              const popup = document.getElementById('popup' + popupId);
+              popup.style.display = 'block';
+            }
+            async function deleteUser(alumId) {
+              console.log(alumId);
+              try{
+                const deletedUser=await axios.delete(`http://127.0.0.1:3000/api/v1/users/delete-user/${alumId}`);
+              console.log("wekfne",deletedUser)
+              }catch(err){
+                console.log(err);
+              }
+              
+            }
+
+            function closePopup(popupId) {
+              const popup = document.getElementById('popup' + popupId);
+              popup.style.display = 'none';
+            }
+                    

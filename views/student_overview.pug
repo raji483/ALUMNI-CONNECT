@@ -1,0 +1,30 @@
+extends base
+
+block content
+  main.main
+    .card-container
+      
+      each company in tours
+        .card
+          .card__header
+            .card__picture
+              .card__picture-overlay &nbsp;
+              img.card__picture-img(src=`/img/animated-sales.png`, alt=`${company.name}`)
+            h3.heading-tertirary
+              span= company.name
+
+          .card__details
+            h4.card__sub-heading= `A Software company`
+            p.card__text= "A company where you can find your alumni"
+            .card__data
+              svg.card__icon
+                use(xlink:href='/img/icons.svg#icon-map-pin')
+              span= company.name
+      
+            .card__data
+              svg.card__icon
+                use(xlink:href='/img/icons.svg#icon-user')
+              span= `people`
+
+          .card__footer
+            a.btn.btn--green.btn--small(href=`/tour/${company._id}`) Details

@@ -1,0 +1,46 @@
+extends base
+
+block content
+    h1.sub__heading.referral_heading="REFERRALS"
+    hr.referral_hr
+    table.content-table
+        thead
+                    tr
+                    th company
+                    th role
+                    th link
+                    th location
+                    th contact
+        each referr in allReferrals
+            
+                
+                tbody
+                    tr
+                    td=`${referr.companyName}`
+                    td=`${referr.role}`
+                    td=`${referr.link}`
+                    td=`${referr.location}`
+                    td
+                        button.btn.btn--small.btn--green.all-btn(type="button" onclick="openPopup('" + referr.id + "')") Contact
+                        div(id="popup" + referr.id, class="popup" style="display: none;")
+            
+                            .popup-content
+                              .card__details
+                                h1.card__heading="Contact Details"
+                                
+                                p.card__text=" "
+                                h1.user_info=`Email:  ${referr.userEmail} `
+                                h1.user_info=`Mobile: 900800xxxx `
+                                div 
+                                    button.btn.btn--green.closePopup(type="button" onclick="closePopup('"+referr.id+"')") Close
+                        script.
+                            function openPopup(popupId) {
+                                const popup = document.getElementById('popup' + popupId);
+                            popup.style.display = 'block';
+                            }
+
+                            function closePopup(popupId) {
+                                const popup = document.getElementById('popup' + popupId);
+                                popup.style.display = 'none';
+                            }
+                        

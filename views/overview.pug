@@ -1,0 +1,177 @@
+extends base
+
+mixin overviewBox(label, text, icon)
+  .overview-box__detail
+    svg.overview-box__icon
+      use(xlink:href=`/img/icons.svg#icon-${icon}`)
+    span.overview-box__label= label
+    span.overview-box__text= text
+
+
+block content
+
+    section.section-header
+      .header__hero
+        .header__hero-overlay &nbsp;
+        
+
+      .heading-box
+        h1.home-heading-primary
+          span= "Alumni Connect"
+        .heading-box__group
+          
+          .heading-box__detail
+            svg.heading-box__icon
+              use(xlink:href='/img/icons.svg#icon-map-pin')
+            span.heading-box__text= "PLace of Great Minds Of RGUKT"
+    
+    .line &nbsp;
+    script(src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js")
+    span.search_input_cont
+      input#searchInput.search-input(type='text' placeholder='Search Company')
+    script.
+      // Get the input field and register keypress and click event listeners
+      const inputField = document.getElementById('searchInput');
+      inputField.addEventListener('keypress', handleKeyPress);
+      inputField.addEventListener('click', handleClick);
+      // Function to handle keypress event
+      function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          const searchQuery = inputField.value;
+          performSearch(searchQuery);
+        }
+      }
+      // Function to handle click event
+      function handleClick() {
+        const searchQuery = inputField.value;
+        performSearch(searchQuery);
+      }
+      // Function to perform the search
+      function performSearch(query) {
+      // Your search logic goes here
+        console.log('Searching for:', query);
+          const fetchData = async () => {
+          try {
+            const response = await axios(`http://127.0.0.1:3000/`,{params:{input:query,fromForm:1}});
+            console.log(response.data);
+            const cont=document.getElementById("card-container1");
+            cont.textContent="";
+            response.data.companies.forEach((ele)=>{
+              const ele1=document.createElement('div');
+              ele1.classList.add('card');
+              
+              const elehead=document.createElement('div');
+              elehead.classList.add('card__header');
+              const card__picture=document.createElement('div');
+              card__picture.classList.add('card__picture');
+
+
+              const card__picture_overlay=document.createElement('div');
+              card__picture_overlay.classList.add('card__picture-overlay');
+              const card__picture_img=document.createElement('img');
+              card__picture_img.src='/img/animated-sales.png';
+              card__picture_img.classList.add('card__picture-img');
+
+              const heading_tertirary=document.createElement('h3');
+              heading_tertirary.classList.add('heading-tertirary');
+              const sp=document.createElement('span');
+              sp.textContent=ele.name;
+              heading_tertirary.appendChild(sp);
+              const card__details=document.createElement('div');
+              card__details.classList.add('card__details');
+              const card__sub_heading=document.createElement('h4');
+              card__sub_heading.classList.add('card__sub-heading');
+              const card__text=document.createElement('p');
+              card__text.classList.add('card__text');
+
+              const card__data=document.createElement('div');
+              card__data.classList.add('card__data');
+              const sp1=document.createElement('span');
+              sp1.textContent=ele.name;
+              const card__data1=document.createElement('div');
+              card__data1.classList.add('card__data');
+
+              const card__footer=document.createElement('div');
+              card__footer.classList.add('card__footer');
+              const card__data2=document.createElement('a');
+              card__data2.classList.add('card__data-img');
+              const btn__small=document.createElement('a');
+              btn__small.classList.add('btn','btn--green','btn--small','card-btn');
+              btn__small.href = `http://127.0.0.1:3000/get-all-alumni/${ele._id}`;
+              console.log(btn__small.href)
+              btn__small.textContent = 'Click me';
+              const svgg=document.createElement('svg');
+              svgg.classList.add('card__icon');
+              const use=document.createElement('use');
+              use.setAttribute( "xlink:href", "/img/icons.svg#icon-map-pin");
+              svgg.appendChild(use)
+
+              const svgg1=document.createElement('svg');
+              svgg1.classList.add('card__icon');
+              const use1=document.createElement('use');
+              use1.setAttribute( "xlink:href", "/img/icons.svg#icon-user");
+              svgg1.appendChild(use1)
+              const sp3=document.createElement('span');
+              sp3.textContent=`${ele.usersCount}`;
+              card__picture.appendChild(card__picture_overlay);
+              card__picture.appendChild(card__picture_img)
+              elehead.appendChild(card__picture);
+              elehead.appendChild(heading_tertirary);
+              
+              card__sub_heading.textContent=`A Software company`;
+              card__text.textContent="A company where you can find your alumni"
+              card__data1.appendChild(svgg1);
+              card__data1.appendChild(sp3);
+              card__data.appendChild(svgg);
+              card__data.appendChild(sp1);
+              card__details.appendChild(card__sub_heading);
+              card__details.appendChild(card__text);
+              card__details.appendChild(card__data);
+              card__details.appendChild(card__data1);
+              card__footer.appendChild(btn__small);
+
+
+              ele1.appendChild(elehead);
+              ele1.appendChild(card__details);
+              ele1.appendChild(card__footer);
+              cont.appendChild(ele1)
+            })
+          } catch (error) {
+            console.error(error);
+          }
+        };
+        
+        fetchData();
+          console.log('Searching for:', query);
+      }
+      
+      
+
+    #card-container1
+      
+      each company in companies
+        .card
+          .card__header
+            .card__picture
+              .card__picture-overlay &nbsp;
+              img.card__picture-img(src=`/img/animated-sales.png`, alt=`${company.name}`)
+            h3.heading-tertirary
+              span= company.name
+
+          .card__details
+            h4.card__sub-heading= `A Software company`
+            p.card__text= "A company where you can find your alumni"
+            .card__data
+              svg.card__icon
+                use(xlink:href='/img/icons.svg#icon-map-pin')
+              span= company.name
+      
+            .card__data
+              svg.card__icon
+                use(xlink:href='/img/icons.svg#icon-user')
+              span= company.usersCount
+
+          .card__footer
+  
+            a.btn.btn--green.btn--small#card-btn(href=`/get-all-alumni/${company._id}`) Details

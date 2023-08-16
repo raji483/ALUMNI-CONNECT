@@ -1,0 +1,60 @@
+extends base
+
+mixin navItem(link, text, icon, active)
+  li(class=`${active ? 'side-nav--active' : ''}`)
+    a(href=`${link}`)
+      svg
+        use(xlink:href=`img/icons.svg#icon-${icon}`)
+      | #{text}
+
+block content
+  main.main
+    .user-view
+      nav.user-view__menu
+        ul.side-nav
+          +navItem('/me', 'Settings', 'settings')
+          +navItem('/me/interview-experience', 'Interview Experience', 'briefcase')
+          +navItem('#', 'Referrals', 'star',true)
+          +navItem('/me/contribute', 'SAHAYA MITHRA', 'credit-card')
+
+        - if (user.role === 'admin')
+          .admin-nav
+            h5.admin-nav__heading Admin
+            ul.side-nav
+              +navItem('#', 'Manage tours', 'map')
+              if user.isAlumni
+                +navItem('/me/interview-experience', 'Interview Experience', 'briefcase')
+                +navItem('/me/referrals', 'Referrals', 'star')
+              +navItem('#', 'Manage bookings', 'briefcase')
+
+      .user-view__content
+        .user-view__form-container
+          h2.heading-secondary.ma-bt-md POST A REFERRAL
+          form.form.form-user-referrals
+          
+              
+         
+            .form__group
+              textarea#userTextarea(name=`${user.id}`, style="display: none;" value=user.id)
+              label.form__label(for='companyName') Company Name
+              input#companyName.form__input(type='text', placeholder='Ex: Google', required, name='companyName')
+            .form__group
+              label.form__label(for='role') Role
+              input#role.form__input(type='text', placeholder='Ex: SDE 1', required, name='role')
+            .form__group
+              label.form__label(for='link') Link
+              input#link.form__input(type='text', placeholder='Link to job post', required, name='link')
+            .form__group
+              label.form__label(for='location') Location
+              input#location.form__input(type='text', placeholder='Ex: Hyderabad', required, name='location')
+            
+            .form__group.right
+              button.btn.btn--small.btn--green.btn--share-experience Post 
+
+        
+      
+          
+
+
+
+

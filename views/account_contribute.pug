@@ -1,0 +1,49 @@
+extends base
+
+mixin navItem(link, text, icon, active)
+  li(class=`${active ? 'side-nav--active' : ''}`)
+    a(href=`${link}`)
+      svg
+        use(xlink:href=`img/icons.svg#icon-${icon}`)
+      | #{text}
+
+block content
+  main.main
+    .user-view
+      nav.user-view__menu
+        ul.side-nav
+          +navItem('/me', 'Settings', 'settings')
+          if user.isAlumni
+                +navItem('/me/interview-experience', 'Interview Experience', 'briefcase')
+                +navItem('/me/referrals', 'Referrals', 'star')
+            
+          +navItem('#', 'SAHAYA MITHRA', 'credit-card',true)
+
+        - if (user.role === 'admin')
+          .admin-nav
+            h5.admin-nav__heading Admin
+            ul.side-nav
+              +navItem('#', 'Manage tours', 'map')
+              
+
+      .user-view__content
+        .user-view__form-container
+          h2.heading-secondary.ma-bt-md Contribute to College
+          form.form.form-user-contribute
+              
+         
+            .form__group
+              textarea#userTextarea(name=`${user.id}`, style="display: none;" value=user.id)
+              label.form__label(for='amount') Amount to Contribute
+              input#amount.form__input(type='number', placeholder='Ex: 100', required, name='amount')
+            
+            .form__group.right
+              button.btn.btn--small.btn--green.btn--share-experience Contribute 
+
+        
+      
+          
+
+
+
+
